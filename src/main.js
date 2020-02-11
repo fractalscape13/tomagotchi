@@ -8,11 +8,12 @@ function showFood(object) {
   let stat = object.food;
   $("#food" + object.name).text(stat);
   if (object.food < 25 && object.food > 0) {
-    $("#foodwarning").text(object.name + " is getting hungry...");
+    $("#foodwarning"+object.name).text(" "+object.name + " is getting hungry...");
   } else if (object.food <= 0) {
-    $("#warning").text(object.name + " starved you neglectful jerk!");
+    $("#warning"+object.name).text(" "+object.name + " starved you neglectful jerk!");
+    endGame(object.name);
   } else {
-    $("#foodwarning").text("");
+    $("#foodwarning"+object.name).text("");
   }
 }
 
@@ -20,11 +21,12 @@ function showFun(object) {
   let stat = object.fun;
   $("#fun" + object.name).text(stat);
   if (object.fun < 25 && object.fun >0) {
-    $("#funwarning").text(" "+object.name + " is getting bored...");
+    $("#funwarning"+object.name).text(" "+object.name + " is getting bored...");
   } else if (object.fun <= 0) {
     $("#warning"+object.name).text(" "+object.name + " got bored and ran away!");
+    endGame(object.name);
   } else {
-    $("#funwarning").text("");
+    $("#funwarning"+object.name).text("");
   }
 }
 
@@ -33,17 +35,22 @@ function showSleep(object) {
   $("#sleep" + object.name).text(stat);
   if (object.sleep >= 100) {
     $("#warning"+object.name).text(" "+object.name + " went insane from sleep deprivation!");
+    endGame(object.name);
   } else if (object.sleep < 0) {
-    $("#sleepwarning").text(" "+object.name + " is sleeping too much and getting bored!");
+    $("#sleepwarning"+object.name).text(" "+object.name + " is sleeping too much and getting bored!");
   } else {
-    $("#sleepwarning").text("");
+    $("#sleepwarning"+object.name).text("");
   }
+}
+
+function endGame(name) {
+  $(".stats"+name).hide();
 }
 
 const animal = [];
 let animalIndex = 0;
-function createAnimal(nameInput) {
-  let newAnimal = new Tomagotchi(nameInput);
+function createAnimal(givenName, nameInput) {
+  let newAnimal = new Tomagotchi(givenName, nameInput);
   animal.push(newAnimal);
   let request = new XMLHttpRequest();
   const url = `https://dog.ceo/api/breeds/image/random`;
@@ -58,16 +65,20 @@ function createAnimal(nameInput) {
   request.send();
 
   const showAnimal = function (response) {
-    $(".animals").append(`<div id="animal` + animalIndex + `">
-          <p>`+ newAnimal.name + `
+    $(".animals").append(`<div class="box" id="animal` + animalIndex + `">
+          <p>`+ newAnimal.given + `
+          <div class="fit" id=`+newAnimal.name+`>
           <img src=${response.message} alt="picture of your animal">
-          <p>Food Level: <span id="food`+ newAnimal.name + `"></span><span id="foodwarning"></span></p>
-          <p>Fun Level: <span id="fun`+ newAnimal.name + `"></span><span id="funwarning"></span></p>
-          <p>Sleep Level: <span id="sleep`+ newAnimal.name + `"></span><span id="sleepwarning"></span></p>
-          <p id="warning`+newAnimal.name+`"><p>
+          <div class="stats`+newAnimal.name+`">
+          <p>Food Level: <span id="food`+ newAnimal.name + `"></span><span id="foodwarning`+newAnimal.name+`"></span></p>
+          <p>Fun Level: <span id="fun`+ newAnimal.name + `"></span><span id="funwarning`+newAnimal.name+`"></span></p>
+          <p>Exhaustion Level: <span id="sleep`+ newAnimal.name + `"></span><span id="sleepwarning`+newAnimal.name+`"></span></p>
           <button type="button" class="feed" id="`+ animalIndex + `">Feed me!</button>
           <button type="button" class="fun" id="`+ animalIndex + `">Play with me!</button>
           <button type="button" class="sleep" id="`+ animalIndex + `">Sleepy time!</button>
+          </div>
+          </div>
+          <p id="warning`+newAnimal.name+`"><p>
           </div>`);
     showFood(newAnimal);
     showFun(newAnimal);
@@ -80,10 +91,11 @@ function createAnimal(nameInput) {
 $(document).ready(function () {
   $("form").submit(function (event) {
     event.preventDefault();
-    let nameInput = $("input#animalname").val();
+    let givenName = $("input#animalname").val();
+    let nameInput = givenName.replace(/\s+/g,"");
     if (nameInput) {
       if (animal.length === 0) {
-        createAnimal(nameInput);
+        createAnimal(givenName, nameInput);
       } else {
         for (let i = 0; i < animalIndex; i++) {
           if (nameInput === animal[i].name) {
@@ -91,7 +103,7 @@ $(document).ready(function () {
             setTimeout(function () { $("#hidden").fadeOut(); }, 2000);
             $("form")[0].reset();
           } else {
-            createAnimal(nameInput);
+            createAnimal(givenName, nameInput);
           }
           break;
         }

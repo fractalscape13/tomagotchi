@@ -21,7 +21,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'tomagotchi',
       template: './src/index.html',
-      inject: 'body'
+      inject: 'head'
     })
   ],
   module: {
