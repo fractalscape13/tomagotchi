@@ -36,6 +36,9 @@ $(document).ready(function(){
     <button type="button" class="fun" id="`+animalIndex+`">Play with me!</button>
     <button type="button" class="sleep" id="`+animalIndex+`">Sleepy time!</button>
     </div>`);
+    showFood(newAnimal);
+    showFun(newAnimal);
+    showSleep(newAnimal);
     animalIndex++;
     $("form")[0].reset();
   });
@@ -58,10 +61,13 @@ $(document).ready(function(){
   $("div.animals").on("click", "button", function(){
     if (this.className === "feed"){
       animal[this.id].feed();
+      showFood(animal[this.id]);
     } else if (this.className === "fun") {
       animal[this.id].play();
+      showFun(animal[this.id]);
     } else if (this.className === "sleep") {
       animal[this.id].rest();
+      showSleep(animal[this.id]);
     }
   });
 

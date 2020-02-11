@@ -2,22 +2,17 @@ export class Tomagotchi {
 
   constructor(name) {
     this.name = name;
-    this.food = 100;
-    this.fun = 100;
-    this.sleep = 0;
+    this.food = (Math.ceil(Math.random()*50)+50);
+    this.fun = (Math.ceil(Math.random()*50)+50);
+    this.sleep = (Math.floor(Math.random()*50));
     this.dead = false;
   }
 
-  deathWatch() {
-    if (this.food === 0 || this.fun === 0 || this.sleep === 100) {
-      alert("you dead");
-    }
-  }
   foodTimer() {
     setInterval(() => {
       this.food--;
       if(this.food === 0){
-        alert("you dead");
+        alert(this.name+" starved you neglectful jerk!");
       }
     }, 6000);
   }
@@ -25,12 +20,18 @@ export class Tomagotchi {
   funTimer() {
     setInterval(() => {
       this.fun--;
+      if(this.fun === 0) {
+        alert(this.name+" got bored and ran away!");
+      }
     }, 8000);
   }
 
   sleepTimer() {
     setInterval(() => {
       this.sleep++;
+      if(this.sleep === 100) {
+        alert(this.name+" went insane from sleep deprivation!");
+      }
     }, 10000);
   }
 
@@ -47,9 +48,3 @@ export class Tomagotchi {
   }
 
 }
-
-//display functions
-//
-//doc ready
-// new TOmagotchi
-// Tomagotchi.watch(food, displayFoodLevel())
