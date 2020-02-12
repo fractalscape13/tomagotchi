@@ -6,7 +6,7 @@ import './styles.css';
 
 function showFood(object) {
   let stat = object.food;
-  $("#food" + object.name).text(stat);
+  $("#food"+object.name).attr('style', 'width: '+stat+'%');
   if (object.food < 25 && object.food > 0) {
     $("#foodwarning"+object.name).text(" "+object.name + " is getting hungry...");
   } else if (object.food <= 0) {
@@ -19,7 +19,7 @@ function showFood(object) {
 
 function showFun(object) {
   let stat = object.fun;
-  $("#fun" + object.name).text(stat);
+  $("#fun" + object.name).attr('style', 'width: '+stat+'%');
   if (object.fun < 25 && object.fun >0) {
     $("#funwarning"+object.name).text(" "+object.name + " is getting bored...");
   } else if (object.fun <= 0) {
@@ -32,7 +32,7 @@ function showFun(object) {
 
 function showSleep(object) {
   let stat = object.sleep;
-  $("#sleep" + object.name).text(stat);
+  $("#sleep" + object.name).attr('style', 'width: '+stat+'%');
   if (object.sleep >= 100) {
     $("#warning"+object.name).text(" "+object.name + " went insane from sleep deprivation!");
     endGame(object.name);
@@ -70,12 +70,18 @@ function createAnimal(givenName, nameInput) {
           <div class="fit" id=`+newAnimal.name+`>
           <img src=${response.message} alt="picture of your animal">
           <div class="stats`+newAnimal.name+`">
-          <p>Food Level: <span id="food`+ newAnimal.name + `"></span><span id="foodwarning`+newAnimal.name+`"></span></p>
-          <p>Fun Level: <span id="fun`+ newAnimal.name + `"></span><span id="funwarning`+newAnimal.name+`"></span></p>
-          <p>Exhaustion Level: <span id="sleep`+ newAnimal.name + `"></span><span id="sleepwarning`+newAnimal.name+`"></span></p>
           <button type="button" class="feed" id="`+ animalIndex + `">Feed me!</button>
+          <div class="progress">
+          <div id=food`+newAnimal.name+` class=" progress-bar bg-success" role="progressbar" style="width:`+newAnimal.food+`%" aria-valuemin="0" aria-valuemax="100"></div>
+          </div><br>
           <button type="button" class="fun" id="`+ animalIndex + `">Play with me!</button>
+          <div class="progress">
+          <div id=fun`+newAnimal.name+` class=" progress-bar bg-warning" role="progressbar" style="width:`+newAnimal.fun+`%" aria-valuemin="0" aria-valuemax="100"></div>
+          </div><br>
           <button type="button" class="sleep" id="`+ animalIndex + `">Sleepy time!</button>
+          <div class="progress">
+          <div id=sleep`+newAnimal.name+` class=" progress-bar bg-danger" role="progressbar" style="width:`+newAnimal.sleep+`%" aria-valuemin="0" aria-valuemax="100"></div>
+          </div><br>
           </div>
           </div>
           <p id="warning`+newAnimal.name+`"><p>
@@ -145,3 +151,4 @@ $(document).ready(function () {
     }
   });
 });
+{/* <span id="food`+ newAnimal.name + `"></span><span id="foodwarning`+newAnimal.name+`"></span> */}

@@ -6,7 +6,7 @@
 
 ## Description
 
-_This site will take a users age on earth and calculate their age on various other planets._
+_This site will allow you to create and take care of dogagotchi._
 
 ## Specifications:
 
